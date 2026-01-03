@@ -28,6 +28,10 @@ const Home = () => {
                                 <CheckCircle size={20} />
                                 Complete Trip Setup
                             </Link>
+                            <Link to="/explore" className="btn btn-outline-white btn-lg">
+                                <Globe size={20} />
+                                Explore Community
+                            </Link>
                         </div>
                         <p className="hero-note">
                             <strong>AI Mode:</strong> Get instant detailed itinerary • <strong>Complete Setup:</strong> All-in-one trip configuration

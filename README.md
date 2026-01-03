@@ -75,7 +75,8 @@ WanderAI addresses these challenges by providing:
 - **React Router DOM 7.10.1** - Client-side routing
 - **Vite 7.2.4** - Lightning-fast build tool and dev server
 - **Lucide React 0.561.0** - Beautiful, consistent icon library
-- **CSS3** - Custom styling with modern CSS features
+- **Leaflet & React Leaflet** - Interactive maps integration
+- **CSS3 & Vanilla CSS** - Custom styling with modern CSS features and glassmorphism
 
 ### Backend & Services
 
@@ -109,6 +110,12 @@ WanderAI addresses these challenges by providing:
 Email: demo@wanderai.com
 Password: demo123
 ```
+
+### Community Features 🚀
+- **Explore Community**: Browse and discover public itineraries shared by other travelers.
+- **Trip Sharing**: Toggle trips as public to share your planning genius with the world!
+- **Interactive Maps**: Real-time Leaflet maps for all trip destinations.
+- **Smart Weather**: Live weather insights integrated into your trip overview.
 
 ---
 
@@ -499,9 +506,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🗺️ Roadmap
 
+- [x] Social features (trip sharing, public explore page)
+- [x] Interactive mapping (Leaflet integration)
+- [x] Smarter weather integration
 - [ ] Mobile app (React Native)
 - [ ] Offline mode
-- [ ] Social features (trip sharing, reviews)
+- [ ] Integration with booking platforms
 - [ ] Integration with booking platforms
 - [ ] Multi-language support
 - [ ] Dark mode

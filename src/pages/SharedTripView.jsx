@@ -3,10 +3,12 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
     Globe, Calendar, MapPin, Users, Plane, Clock,
     ArrowRight, Copy, Share2, ClipboardList,
-    Download, Printer, Heart, ExternalLink
+    Download, Printer, Heart, ExternalLink, Thermometer
 } from 'lucide-react';
 import tripService from '../services/tripService';
 import { useAuth } from '../context/AuthContext';
+import { getMockWeather } from '../utils/weatherMock';
+import TripMap from '../components/TripMap';
 import './SharedTripView.css';
 
 const SharedTripView = () => {
@@ -18,6 +20,7 @@ const SharedTripView = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [copying, setCopying] = useState(false);
+    const [weather, setWeather] = useState(null);
 
     useEffect(() => {
         const fetchSharedTrip = async () => {
@@ -29,6 +32,12 @@ const SharedTripView = () => {
 
                 console.log('✅ Trip Data Loaded:', tripData);
                 setTrip(tripData);
+
+                // Fetch mock weather
+                if (tripData?.destination) {
+                    const weatherData = getMockWeather(tripData.destination);
+                    setWeather(weatherData);
+                }
 
                 // Increment view count
                 await tripService.incrementViewCount(shareToken);
@@ -168,6 +177,13 @@ const SharedTripView = () => {
                 </div>
             </div>
 
+            {/* Map Section */}
+            <div className="shared-map-section container">
+                <h2 className="section-title">Trip Location</h2>
+                <TripMap destination={trip.destination} height="300px" />
+                <p className="map-hint text-center mb-6">Interactive Map: Scroll to zoom, drag to move</p>
+            </div>
+
             <div className="shared-main-content">
                 <div className="content-grid">
                     {/* Itinerary Column */}
@@ -211,6 +227,18 @@ const SharedTripView = () => {
 
                     {/* Sidebar Details */}
                     <div className="details-sidebar">
+                        {/* Weather Card */}
+                        {weather && (
+                            <div className="sidebar-card weather-card-highlight">
+                                <h3><Thermometer size={18} /> Weather</h3>
+                                <div className="shared-weather-info">
+                                    <p className="weather-temp">{weather.temperature}°C</p>
+                                    <p className="weather-condition">{weather.condition}</p>
+                                    <p className="small">{weather.description}</p>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Transport */}
                         {(trip.transport_mode || trip.transportMode) && (
                             <div className="sidebar-card">

@@ -20,6 +20,7 @@ const Navbar = () => {
 
     const navItems = [
         { path: '/home', label: 'Home', icon: Home },
+        { path: '/explore', label: 'Explore', icon: Globe },
         { path: '/overview', label: 'Overview', icon: LayoutDashboard },
         { path: '/trip-creator', label: 'Create Trip', icon: Plus },
         { path: '/day-planner', label: 'Day Planner', icon: Calendar },

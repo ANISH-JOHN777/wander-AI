@@ -448,6 +448,40 @@ class TripService {
     }
 
     /**
+     * Get all public trips for the Explore community page
+     * @returns {Promise<{trips, error}>}
+     */
+    async getPublicTrips() {
+        if (!isBackendAvailable()) {
+            // Local mode: filter all public trips
+            try {
+                const trips = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+                const publicTrips = trips.filter(t => t.is_public);
+                return { trips: publicTrips, error: null };
+            } catch (error) {
+                console.error('❌ Error loading public trips from localStorage:', error);
+                return { trips: [], error };
+            }
+        }
+
+        // Supabase mode: fetch all public trips
+        try {
+            const { data, error } = await supabase
+                .from('trips')
+                .select('*')
+                .eq('is_public', true)
+                .order('shared_at', { ascending: false });
+
+            if (error) throw error;
+
+            return { trips: data, error: null };
+        } catch (error) {
+            console.error('❌ Error loading public trips from Supabase:', error);
+            return { trips: [], error };
+        }
+    }
+
+    /**
      * Increment view count for a shared trip
      * @param {string} shareToken - Share token
      * @returns {Promise<{error}>}

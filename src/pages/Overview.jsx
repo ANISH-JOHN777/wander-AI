@@ -1,14 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTripContext } from '../context/TripContext';
 import { Link, Navigate } from 'react-router-dom';
-import { Luggage, Heart, Users, Plane, Clock, PartyPopper, Calendar, CalendarDays, ClipboardList, Save, Sparkles, ArrowRight, Route } from 'lucide-react';
+import {
+    Luggage, Heart, Users, Plane, Clock, PartyPopper,
+    Calendar, CalendarDays, ClipboardList, Save, Sparkles,
+    ArrowRight, Route, Cloud, Thermometer, Wind, Droplets
+} from 'lucide-react';
 import Navbar from '../components/Navbar';
 import ShareModal from '../components/ShareModal';
 import tripService from '../services/tripService';
+import { getMockWeather } from '../utils/weatherMock';
+import TripMap from '../components/TripMap';
 import './Overview.css';
 
 const Overview = () => {
     const { activeTrip, setActiveTrip, isShareModalOpen, setIsShareModalOpen } = useTripContext();
+    const [weather, setWeather] = useState(null);
+
+    useEffect(() => {
+        if (activeTrip?.destination) {
+            // In a real app, we'd check for an API key first
+            // and call weatherService. But here we use our smart mock
+            const weatherData = getMockWeather(activeTrip.destination);
+            setWeather(weatherData);
+        }
+    }, [activeTrip?.destination]);
 
     // Redirect to TripCreator if no active trip
     if (!activeTrip) {
@@ -169,6 +185,8 @@ const Overview = () => {
                         </div>
                     </div>
 
+
+
                     {/* Total Distance Card */}
                     {activeTrip.totalKm && (
                         <div className="detail-card highlight">
@@ -179,6 +197,42 @@ const Overview = () => {
                             </div>
                         </div>
                     )}
+                </div>
+
+                {/* Trip Insights Section */}
+                <div className="insights-grid">
+                    <div className="overview-map-section">
+                        <h2 className="section-title">Destination Map</h2>
+                        <TripMap destination={activeTrip.destination} />
+                        <p className="map-hint">Scroll or drag to explore the area</p>
+                    </div>
+
+                    <div className="weather-insight-section">
+                        <h2 className="section-title">Weather Insights</h2>
+                        {weather ? (
+                            <div className="weather-big-card">
+                                <div className="weather-main">
+                                    <div className="weather-temp-big">{weather.temperature}°C</div>
+                                    <div className="weather-info-big">
+                                        <div className="weather-condition-big">{weather.condition}</div>
+                                        <div className="weather-desc-big">{weather.description}</div>
+                                    </div>
+                                </div>
+                                <div className="weather-stats-grid">
+                                    <div className="w-stat">
+                                        <Droplets size={16} />
+                                        <span>{weather.humidity}% Humidity</span>
+                                    </div>
+                                    <div className="w-stat">
+                                        <Wind size={16} />
+                                        <span>{weather.windSpeed} km/h Wind</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="weather-loading">Loading weather data...</div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Quick Actions */}

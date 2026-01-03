@@ -34,6 +34,7 @@ import TripStoryCreator from './pages/smart-tools/TripStoryCreator';
 import Auth from './pages/Auth';
 import EmailConfirmation from './pages/EmailConfirmation';
 import SharedTripView from './pages/SharedTripView';
+import Explore from './pages/Explore';
 import './App.css';
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
                       <Route path="/shared/:shareToken" element={<SharedTripView />} />
                       <Route path="/day-planner" element={<DayPlanner />} />
                       <Route path="/saved-trips" element={<SavedTrips />} />
+                      <Route path="/explore" element={<Explore />} />
                       <Route path="/bookings" element={<Bookings />} />
                       <Route path="/bookings/hotels" element={<HotelFinder />} />
                       <Route path="/bookings/airbnb" element={<AirbnbFinder />} />

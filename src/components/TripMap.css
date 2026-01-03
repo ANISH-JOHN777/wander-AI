@@ -1,0 +1,43 @@
+.trip-map-container {
+    width: 100%;
+    background: #f1f5f9;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.map-popup {
+    font-family: 'Inter', sans-serif;
+}
+
+.map-popup strong {
+    color: #dc2626;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.map-popup p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* Fix for Leaflet controls */
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+    background-color: white !important;
+    color: #dc2626 !important;
+    border: 1px solid #f1f5f9 !important;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+    background-color: #fef2f2 !important;
+}
