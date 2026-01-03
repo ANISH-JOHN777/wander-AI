@@ -1,13 +1,31 @@
 import { useState } from 'react';
 import { useTripContext } from '../context/TripContext';
+import { useAuth } from '../context/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
-import { AlertTriangle, Clock, Pencil, Trash2, FileText } from 'lucide-react';
+import { AlertTriangle, Clock, Pencil, Trash2, FileText, Lock } from 'lucide-react';
 import './DayPlanner.css';
 
 const DayPlanner = () => {
     const { activeTrip, updateActiveTrip } = useTripContext();
+    const { user } = useAuth();
     const [editingActivity, setEditingActivity] = useState(null);
     const [showAddForm, setShowAddForm] = useState({ dayIndex: null });
+
+    // Check if user is authenticated
+    if (!user) {
+        return (
+            <div className="day-planner-page">
+                <div className="error-state">
+                    <div className="error-icon"><Lock size={48} /></div>
+                    <h2>Sign In Required</h2>
+                    <p>Please sign in to plan your day-wise itinerary and save your activities.</p>
+                    <Link to="/auth" className="btn btn-primary">
+                        Sign In Now
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     // Redirect if no active trip
     if (!activeTrip) {
