@@ -342,6 +342,214 @@ class TripService {
             return { error };
         }
     }
+
+    /**
+     * Toggle trip public/private status
+     * @param {string} tripId - Trip ID
+     * @param {boolean} isPublic - Whether to make trip public
+     * @returns {Promise<{trip, error}>}
+     */
+    async toggleTripPublic(tripId, isPublic) {
+        if (!isBackendAvailable()) {
+            // Local mode: update in localStorage
+            try {
+                const trips = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+                const index = trips.findIndex(t => t.id === tripId);
+
+                if (index === -1) {
+                    return { trip: null, error: new Error('Trip not found') };
+                }
+
+                // Generate share token if making public
+                if (isPublic && !trips[index].share_token) {
+                    trips[index].share_token = this.generateShareToken();
+                    trips[index].shared_at = new Date().toISOString();
+                }
+
+                trips[index].is_public = isPublic;
+                trips[index].updated_at = new Date().toISOString();
+
+                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trips));
+                console.log('📍 LOCAL MODE: Trip sharing toggled in localStorage');
+                return { trip: trips[index], error: null };
+            } catch (error) {
+                console.error('❌ Error toggling trip sharing in localStorage:', error);
+                return { trip: null, error };
+            }
+        }
+
+        // Supabase mode: update in database (trigger will auto-generate token)
+        try {
+            const { data, error } = await supabase
+                .from('trips')
+                .update({
+                    is_public: isPublic,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('id', tripId)
+                .select()
+                .single();
+
+            if (error) throw error;
+
+            console.log('✅ Trip sharing toggled in Supabase');
+            return { trip: data, error: null };
+        } catch (error) {
+            console.error('❌ Error toggling trip sharing in Supabase:', error);
+            return { trip: null, error };
+        }
+    }
+
+    /**
+     * Get a shared trip by share token (public access)
+     * @param {string} shareToken - Share token
+     * @returns {Promise<{trip, error}>}
+     */
+    async getSharedTrip(shareToken) {
+        if (!isBackendAvailable()) {
+            // Local mode: find in localStorage
+            try {
+                const trips = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+                const trip = trips.find(t => t.share_token === shareToken && t.is_public);
+
+                if (!trip) {
+                    return { trip: null, error: new Error('Shared trip not found or not public') };
+                }
+
+                return { trip, error: null };
+            } catch (error) {
+                console.error('❌ Error loading shared trip from localStorage:', error);
+                return { trip: null, error };
+            }
+        }
+
+        // Supabase mode: fetch from database (no auth required)
+        try {
+            const { data, error } = await supabase
+                .from('trips')
+                .select('*')
+                .eq('share_token', shareToken)
+                .eq('is_public', true)
+                .single();
+
+            if (error) throw error;
+
+            console.log('✅ Shared trip loaded from Supabase');
+            return { trip: data, error: null };
+        } catch (error) {
+            console.error('❌ Error loading shared trip from Supabase:', error);
+            return { trip: null, error };
+        }
+    }
+
+    /**
+     * Increment view count for a shared trip
+     * @param {string} shareToken - Share token
+     * @returns {Promise<{error}>}
+     */
+    async incrementViewCount(shareToken) {
+        if (!isBackendAvailable()) {
+            // Local mode: increment in localStorage
+            try {
+                const trips = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+                const index = trips.findIndex(t => t.share_token === shareToken);
+
+                if (index !== -1) {
+                    trips[index].view_count = (trips[index].view_count || 0) + 1;
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trips));
+                    console.log('📍 LOCAL MODE: View count incremented');
+                }
+
+                return { error: null };
+            } catch (error) {
+                console.error('❌ Error incrementing view count in localStorage:', error);
+                return { error };
+            }
+        }
+
+        // Supabase mode: increment in database
+        try {
+            const { error } = await supabase.rpc('increment_view_count', {
+                token: shareToken
+            });
+
+            // If RPC doesn't exist, use manual update
+            if (error && error.code === '42883') {
+                const { data: trip } = await supabase
+                    .from('trips')
+                    .select('view_count')
+                    .eq('share_token', shareToken)
+                    .single();
+
+                if (trip) {
+                    await supabase
+                        .from('trips')
+                        .update({ view_count: (trip.view_count || 0) + 1 })
+                        .eq('share_token', shareToken);
+                }
+            } else if (error) {
+                throw error;
+            }
+
+            console.log('✅ View count incremented in Supabase');
+            return { error: null };
+        } catch (error) {
+            console.error('❌ Error incrementing view count in Supabase:', error);
+            return { error };
+        }
+    }
+
+    /**
+     * Copy a shared trip to current user's account
+     * @param {string} shareToken - Share token
+     * @param {string} attribution - Original creator name
+     * @returns {Promise<{trip, error}>}
+     */
+    async copySharedTrip(shareToken, attribution) {
+        // First, get the shared trip
+        const { trip: originalTrip, error: fetchError } = await this.getSharedTrip(shareToken);
+
+        if (fetchError || !originalTrip) {
+            return { trip: null, error: fetchError || new Error('Trip not found') };
+        }
+
+        // Create a copy with attribution
+        const tripCopy = {
+            destination: originalTrip.destination,
+            start_date: originalTrip.start_date || originalTrip.startDate,
+            end_date: originalTrip.end_date || originalTrip.endDate,
+            travel_type: originalTrip.travel_type || originalTrip.travelType,
+            transport_mode: originalTrip.transport_mode || originalTrip.transportMode,
+            travelers: originalTrip.travelers,
+            status: 'planned',
+            notes: `Inspired by ${attribution}\n\n${originalTrip.notes || ''}`,
+
+            // Copy additional details if they exist
+            vehicle_details: originalTrip.vehicle_details || originalTrip.vehicleDetails,
+            accommodation_details: originalTrip.accommodation_details || originalTrip.accommodationDetails,
+            activities_details: originalTrip.activities_details || originalTrip.activitiesDetails,
+            budget_details: originalTrip.budget_details || originalTrip.budgetDetails,
+            setup_type: originalTrip.setup_type || originalTrip.setupType,
+
+            // Copy day plans if they exist
+            day_plans: originalTrip.day_plans || originalTrip.dayPlans,
+
+            // Mark as copied
+            copied_from: shareToken,
+            is_public: false, // Copied trips are private by default
+        };
+
+        // Create the new trip
+        return await this.createTrip(tripCopy);
+    }
+
+    /**
+     * Generate a unique share token (for local mode)
+     * @returns {string}
+     */
+    generateShareToken() {
+        return Math.random().toString(36).substring(2, 14);
+    }
 }
 
 // Create and export a singleton instance

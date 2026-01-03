@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
-import { Home, LayoutDashboard, Plus, Calendar, Ticket, Bot, Save, Settings, Globe, LogIn, User } from 'lucide-react';
+import { Home, LayoutDashboard, Plus, Calendar, Ticket, Bot, Save, Settings, Globe, LogIn, User, Share2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ showShare = false, onShare }) => {
     const { user, isAuthenticated } = useAuth();
 
     const navItems = [
@@ -39,6 +39,18 @@ const Navbar = () => {
                             </NavLink>
                         );
                     })}
+
+                    {/* Share Button (conditional) */}
+                    {showShare && onShare && (
+                        <button
+                            className="nav-link share-btn"
+                            onClick={onShare}
+                            title="Share this trip"
+                        >
+                            <Share2 className="nav-icon" size={18} strokeWidth={2} />
+                            <span className="nav-label">Share</span>
+                        </button>
+                    )}
 
                     {/* Authentication Button */}
                     <NavLink
