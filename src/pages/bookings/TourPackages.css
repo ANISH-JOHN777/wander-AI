@@ -1,0 +1,219 @@
+@import './HotelFinder.css';
+
+/* Tour Packages Specific Styles */
+.tour-packages-page {
+    min-height: 100vh;
+    background: var(--bg-secondary);
+    padding: var(--space-6) var(--space-4);
+}
+
+.packages-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+}
+
+.package-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+
+.package-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.package-header {
+    padding: var(--space-5);
+    background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--bg-secondary) 100%);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+}
+
+.package-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.package-title-section {
+    flex: 1;
+}
+
+.package-title-section h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-2) 0;
+}
+
+.package-rating {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-warning);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+}
+
+.package-details {
+    padding: var(--space-5);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.package-info-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.package-info-row svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.info-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-weight: var(--font-medium);
+}
+
+.info-value {
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    font-weight: var(--font-semibold);
+    margin-left: auto;
+}
+
+.package-highlights {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.package-highlights svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.highlights-text {
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    margin: var(--space-1) 0 0 0;
+    line-height: 1.5;
+}
+
+.package-includes {
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.package-includes h4 {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.includes-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.include-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.include-item svg {
+    color: var(--color-success);
+    flex-shrink: 0;
+}
+
+.package-footer {
+    padding: var(--space-5);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    background: var(--bg-secondary);
+}
+
+.package-price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.package-price .price-label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    font-weight: var(--font-medium);
+    text-transform: uppercase;
+}
+
+.package-price .price-amount {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .packages-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .package-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .package-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .package-price {
+        align-items: center;
+    }
+}

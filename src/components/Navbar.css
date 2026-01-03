@@ -1,0 +1,212 @@
+.navbar {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-8);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+/* Brand */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform var(--transition-fast);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.02);
+}
+
+.brand-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.brand-name {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+/* Navigation Links */
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: var(--font-medium);
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    background: var(--color-primary);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: var(--radius-full);
+}
+
+.nav-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+}
+
+.nav-label {
+    font-size: 0.875rem;
+}
+
+/* Authentication Link - Improved Styling */
+.nav-link.auth-link {
+    background: var(--color-primary);
+    border: none;
+    color: var(--text-inverse);
+    font-weight: var(--font-semibold);
+    padding: var(--space-2) var(--space-5);
+    margin-left: var(--space-6);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.nav-link.auth-link:hover {
+    background: #4f46e5;
+    color: var(--text-inverse);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.nav-link.auth-link.active {
+    background: #4338ca;
+    color: var(--text-inverse);
+    border-color: transparent;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+    .navbar-container {
+        padding: 0 var(--space-4);
+    }
+
+    .navbar-links {
+        gap: 0;
+    }
+
+    .nav-link {
+        padding: var(--space-2) var(--space-2-5);
+        font-size: 0.75rem;
+    }
+
+    .nav-icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .nav-label {
+        display: none;
+    }
+
+    .nav-link.auth-link {
+        margin-left: var(--space-2);
+        padding: var(--space-2) var(--space-3);
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        width: 100%;
+        border-top: 1px solid var(--border-light);
+        border-bottom: none;
+    }
+
+    .navbar-container {
+        height: auto;
+        flex-direction: column;
+        padding: var(--space-3);
+        gap: var(--space-3);
+    }
+
+    .navbar-brand {
+        display: none;
+    }
+
+    .navbar-links {
+        width: 100%;
+        justify-content: space-around;
+        gap: var(--space-2);
+    }
+
+    .nav-link {
+        flex-direction: column;
+        padding: var(--space-2);
+        gap: var(--space-1);
+        flex: 1;
+        max-width: 80px;
+    }
+
+    .nav-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .nav-label {
+        display: block;
+        font-size: 0.65rem;
+    }
+
+    .nav-link.auth-link {
+        margin-left: 0;
+        border-width: 1px;
+    }
+
+    /* Add padding to app-main to account for fixed bottom navbar */
+    .app-main {
+        padding-bottom: 80px;
+    }
+}

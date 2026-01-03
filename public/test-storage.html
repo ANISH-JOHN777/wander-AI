@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage Test - FinalTrip</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        button.danger {
+            background: #e74c3c;
+        }
+
+        button.danger:hover {
+            background: #c0392b;
+        }
+
+        .output {
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .status {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2d3748;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧪 LocalStorage Test</h1>
+        <p class="subtitle">Test if localStorage is working for FinalTrip</p>
+
+        <!-- Status -->
+        <div id="status"></div>
+
+        <!-- Test 1: Check if localStorage is available -->
+        <div class="section">
+            <h3>1️⃣ Check localStorage Support</h3>
+            <button onclick="checkLocalStorage()">Check Support</button>
+            <div id="check-output" class="output" style="display:none;"></div>
+        </div>
+
+        <!-- Test 2: View Current Data -->
+        <div class="section">
+            <h3>2️⃣ View Saved Data</h3>
+            <button onclick="viewTrips()">View Trips</button>
+            <button onclick="viewStories()">View Stories</button>
+            <button onclick="viewActiveTrip()">View Active Trip</button>
+            <button onclick="viewAll()">View All Data</button>
+            <div id="view-output" class="output" style="display:none;"></div>
+        </div>
+
+        <!-- Test 3: Create Test Data -->
+        <div class="section">
+            <h3>3️⃣ Create Test Data</h3>
+            <label>Destination:</label>
+            <input type="text" id="destination" placeholder="e.g., Goa, India" value="Goa, India">
+
+            <label>Start Date:</label>
+            <input type="date" id="startDate">
+
+            <label>End Date:</label>
+            <input type="date" id="endDate">
+
+            <button onclick="createTestTrip()">Create Test Trip</button>
+            <button onclick="createTestStory()">Create Test Story</button>
+            <div id="create-output" class="output" style="display:none;"></div>
+        </div>
+
+        <!-- Test 4: Clear Data -->
+        <div class="section">
+            <h3>4️⃣ Clear Data</h3>
+            <button class="danger" onclick="clearTrips()">Clear Trips</button>
+            <button class="danger" onclick="clearStories()">Clear Stories</button>
+            <button class="danger" onclick="clearAll()">Clear All Data</button>
+            <div id="clear-output" class="output" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Set default dates
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const nextWeek = new Date(today);
+        nextWeek.setDate(nextWeek.getDate() + 7);
+
+        document.getElementById('startDate').value = tomorrow.toISOString().split('T')[0];
+        document.getElementById('endDate').value = nextWeek.toISOString().split('T')[0];
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+        }
+
+        function showOutput(elementId, content) {
+            const output = document.getElementById(elementId);
+            output.textContent = content;
+            output.style.display = 'block';
+        }
+
+        // Test 1: Check localStorage
+        function checkLocalStorage() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+
+                const result = `✅ localStorage is SUPPORTED and WORKING!\n\n` +
+                    `Storage Info:\n` +
+                    `- Available: Yes\n` +
+                    `- Type: ${typeof Storage}\n` +
+                    `- Keys stored: ${localStorage.length}\n\n` +
+                    `FinalTrip Keys:\n` +
+                    `- aiTripPlanner_trips: ${localStorage.getItem('aiTripPlanner_trips') ? 'EXISTS' : 'NOT FOUND'}\n` +
+                    `- aiTripPlanner_stories: ${localStorage.getItem('aiTripPlanner_stories') ? 'EXISTS' : 'NOT FOUND'}\n` +
+                    `- aiTripPlanner_activeTrip: ${localStorage.getItem('aiTripPlanner_activeTrip') ? 'EXISTS' : 'NOT FOUND'}`;
+
+                showOutput('check-output', result);
+                showStatus('✅ localStorage is working correctly!', 'success');
+            } catch (e) {
+                showOutput('check-output', `❌ ERROR: ${e.message}`);
+                showStatus('❌ localStorage is NOT working!', 'error');
+            }
+        }
+
+        // Test 2: View Data
+        function viewTrips() {
+            const trips = localStorage.getItem('aiTripPlanner_trips');
+            if (trips) {
+                const parsed = JSON.parse(trips);
+                showOutput('view-output', `Found ${parsed.length} trip(s):\n\n${JSON.stringify(parsed, null, 2)}`);
+                showStatus(`Found ${parsed.length} trip(s)`, 'success');
+            } else {
+                showOutput('view-output', 'No trips found in localStorage');
+                showStatus('No trips found', 'info');
+            }
+        }
+
+        function viewStories() {
+            const stories = localStorage.getItem('aiTripPlanner_stories');
+            if (stories) {
+                const parsed = JSON.parse(stories);
+                showOutput('view-output', `Found ${parsed.length} story/stories:\n\n${JSON.stringify(parsed, null, 2)}`);
+                showStatus(`Found ${parsed.length} story/stories`, 'success');
+            } else {
+                showOutput('view-output', 'No stories found in localStorage');
+                showStatus('No stories found', 'info');
+            }
+        }
+
+        function viewActiveTrip() {
+            const activeTrip = localStorage.getItem('aiTripPlanner_activeTrip');
+            if (activeTrip) {
+                showOutput('view-output', `Active Trip:\n\n${JSON.stringify(JSON.parse(activeTrip), null, 2)}`);
+                showStatus('Active trip found', 'success');
+            } else {
+                showOutput('view-output', 'No active trip set');
+                showStatus('No active trip', 'info');
+            }
+        }
+
+        function viewAll() {
+            const trips = localStorage.getItem('aiTripPlanner_trips');
+            const stories = localStorage.getItem('aiTripPlanner_stories');
+            const activeTrip = localStorage.getItem('aiTripPlanner_activeTrip');
+
+            let output = '=== ALL FINALTRIP DATA ===\n\n';
+
+            output += '📍 TRIPS:\n';
+            output += trips ? JSON.stringify(JSON.parse(trips), null, 2) : 'None\n';
+            output += '\n\n📖 STORIES:\n';
+            output += stories ? JSON.stringify(JSON.parse(stories), null, 2) : 'None\n';
+            output += '\n\n✈️ ACTIVE TRIP:\n';
+            output += activeTrip ? JSON.stringify(JSON.parse(activeTrip), null, 2) : 'None\n';
+
+            showOutput('view-output', output);
+            showStatus('Showing all data', 'info');
+        }
+
+        // Test 3: Create Test Data
+        function createTestTrip() {
+            const destination = document.getElementById('destination').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (!destination || !startDate || !endDate) {
+                showStatus('Please fill in all fields', 'error');
+                return;
+            }
+
+            const trip = {
+                id: `trip_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                destination: destination,
+                startDate: startDate,
+                endDate: endDate,
+                travelType: 'couple',
+                travelers: 2,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            // Get existing trips or create new array
+            let trips = [];
+            const existingTrips = localStorage.getItem('aiTripPlanner_trips');
+            if (existingTrips) {
+                trips = JSON.parse(existingTrips);
+            }
+
+            // Add new trip
+            trips.unshift(trip);
+
+            // Save to localStorage
+            localStorage.setItem('aiTripPlanner_trips', JSON.stringify(trips));
+            localStorage.setItem('aiTripPlanner_activeTrip', JSON.stringify(trip));
+
+            showOutput('create-output', `✅ Trip created successfully!\n\n${JSON.stringify(trip, null, 2)}`);
+            showStatus('✅ Trip created and saved to localStorage!', 'success');
+        }
+
+        function createTestStory() {
+            const activeTrip = localStorage.getItem('aiTripPlanner_activeTrip');
+
+            if (!activeTrip) {
+                showStatus('❌ Please create a trip first!', 'error');
+                return;
+            }
+
+            const trip = JSON.parse(activeTrip);
+
+            const story = {
+                id: `story_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                title: `My Amazing ${trip.destination} Trip`,
+                content: `This is a test story for my trip to ${trip.destination}. It was an amazing experience!`,
+                tripId: trip.id,
+                destination: trip.destination,
+                tripDates: {
+                    start: trip.startDate,
+                    end: trip.endDate
+                },
+                travelType: trip.travelType,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            // Get existing stories or create new array
+            let stories = [];
+            const existingStories = localStorage.getItem('aiTripPlanner_stories');
+            if (existingStories) {
+                stories = JSON.parse(existingStories);
+            }
+
+            // Add new story
+            stories.unshift(story);
+
+            // Save to localStorage
+            localStorage.setItem('aiTripPlanner_stories', JSON.stringify(stories));
+
+            showOutput('create-output', `✅ Story created successfully!\n\n${JSON.stringify(story, null, 2)}`);
+            showStatus('✅ Story created and saved to localStorage!', 'success');
+        }
+
+        // Test 4: Clear Data
+        function clearTrips() {
+            if (confirm('Are you sure you want to clear all trips?')) {
+                localStorage.removeItem('aiTripPlanner_trips');
+                localStorage.removeItem('aiTripPlanner_activeTrip');
+                showOutput('clear-output', '✅ All trips cleared from localStorage');
+                showStatus('Trips cleared', 'success');
+            }
+        }
+
+        function clearStories() {
+            if (confirm('Are you sure you want to clear all stories?')) {
+                localStorage.removeItem('aiTripPlanner_stories');
+                showOutput('clear-output', '✅ All stories cleared from localStorage');
+                showStatus('Stories cleared', 'success');
+            }
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear ALL FinalTrip data?')) {
+                localStorage.removeItem('aiTripPlanner_trips');
+                localStorage.removeItem('aiTripPlanner_stories');
+                localStorage.removeItem('aiTripPlanner_activeTrip');
+                showOutput('clear-output', '✅ All FinalTrip data cleared from localStorage');
+                showStatus('All data cleared', 'success');
+            }
+        }
+
+        // Auto-check on load
+        window.onload = function () {
+            checkLocalStorage();
+        };
+    </script>
+</body>
+
+</html>

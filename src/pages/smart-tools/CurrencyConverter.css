@@ -1,0 +1,208 @@
+@import '../bookings/HotelFinder.css';
+
+/* Currency Converter Container */
+.converter-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+}
+
+.converter-card,
+.quick-conversions {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    padding: var(--space-6);
+}
+
+.converter-card h3,
+.quick-conversions h3 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-5);
+}
+
+/* Converter Inputs */
+.converter-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+.currency-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.currency-input-group label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-3);
+}
+
+.amount-input {
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    transition: all var(--transition-base);
+}
+
+.amount-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-bg);
+}
+
+.amount-input.converted {
+    background: var(--bg-secondary);
+    color: var(--color-primary);
+}
+
+.currency-select {
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-base);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.currency-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-bg);
+}
+
+.swap-button {
+    align-self: center;
+    padding: var(--space-3);
+    background: var(--color-primary-bg);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swap-button:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: rotate(180deg);
+}
+
+/* Exchange Rate Display */
+.exchange-rate-display {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+}
+
+.exchange-rate-display svg {
+    color: var(--color-success);
+}
+
+.exchange-rate-display span {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+}
+
+/* Conversion Result */
+.conversion-result {
+    padding: var(--space-5);
+    background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--bg-secondary) 100%);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-primary);
+}
+
+.result-text {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-primary);
+    text-align: center;
+}
+
+/* Quick Conversions */
+.quick-conversion-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.quick-conversion-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.quick-conversion-card:hover {
+    background: var(--color-primary-bg);
+    border-color: var(--color-primary);
+    transform: translateX(4px);
+}
+
+.quick-amount {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+}
+
+.quick-equals {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+}
+
+.quick-converted {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .converter-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .result-text {
+        font-size: var(--text-lg);
+    }
+}
