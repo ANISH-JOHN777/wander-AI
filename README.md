@@ -2,7 +2,7 @@
 
 > **Smart, stress-free trip planning powered by AI. Create personalized itineraries, manage bookings, and organize every detail of your journey—all in one place.**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://trip-planner-beta-ten.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://trip-planner-fk6qayjlz-anish-john777s-projects.vercel.app/)
 [![React](https://img.shields.io/badge/React-19.2.0-blue)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.4-purple)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
