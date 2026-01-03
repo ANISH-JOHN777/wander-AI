@@ -12,6 +12,8 @@ const CompleteTripSetup = () => {
     const navigate = useNavigate();
     const { createTrip } = useTripContext();
     const [currentStep, setCurrentStep] = useState(1);
+    const [accommodationMode, setAccommodationMode] = useState('browse'); // 'browse' or 'manual'
+    const [selectedAccommodation, setSelectedAccommodation] = useState(null);
     const [formData, setFormData] = useState({
         // Step 1: Basic Information
         destination: '',
@@ -85,6 +87,34 @@ const CompleteTripSetup = () => {
         'Kochi, Kerala'
     ];
 
+    // Mock accommodation data
+    const mockAccommodations = {
+        hotel: [
+            { id: 1, name: 'Taj Palace Hotel', price: '₹8,000', rating: 4.8, location: 'City Center' },
+            { id: 2, name: 'Grand Hyatt', price: '₹6,500', rating: 4.6, location: 'Downtown' },
+            { id: 3, name: 'Oberoi Hotel', price: '₹9,000', rating: 4.9, location: 'Beachfront' },
+            { id: 4, name: 'ITC Maurya', price: '₹7,000', rating: 4.7, location: 'Business District' },
+            { id: 5, name: 'Leela Palace', price: '₹8,500', rating: 4.8, location: 'Lake View' },
+            { id: 6, name: 'JW Marriott', price: '₹6,000', rating: 4.5, location: 'Airport Road' }
+        ],
+        resort: [
+            { id: 1, name: 'Paradise Beach Resort', price: '₹12,000', rating: 4.9, location: 'Beachfront' },
+            { id: 2, name: 'Mountain View Resort', price: '₹10,000', rating: 4.7, location: 'Hill Station' },
+            { id: 3, name: 'Royal Heritage Resort', price: '₹15,000', rating: 4.8, location: 'Palace Area' },
+            { id: 4, name: 'Wellness Spa Resort', price: '₹11,000', rating: 4.6, location: 'Countryside' },
+            { id: 5, name: 'Luxury Lake Resort', price: '₹13,000', rating: 4.9, location: 'Lakeside' },
+            { id: 6, name: 'Adventure Resort', price: '₹9,500', rating: 4.5, location: 'Forest Area' }
+        ],
+        airbnb: [
+            { id: 1, name: 'Cozy Studio Apartment', price: '₹2,500', rating: 4.7, location: 'City Center' },
+            { id: 2, name: 'Luxury Villa with Pool', price: '₹8,000', rating: 4.9, location: 'Suburbs' },
+            { id: 3, name: 'Beachfront Cottage', price: '₹4,500', rating: 4.8, location: 'Beach Area' },
+            { id: 4, name: 'Modern Loft', price: '₹3,500', rating: 4.6, location: 'Downtown' },
+            { id: 5, name: 'Heritage Homestay', price: '₹3,000', rating: 4.7, location: 'Old City' },
+            { id: 6, name: 'Penthouse Suite', price: '₹6,000', rating: 4.8, location: 'High-rise' }
+        ]
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -98,6 +128,14 @@ const CompleteTripSetup = () => {
             setFormData(prev => ({
                 ...prev,
                 members: type?.members || 1
+            }));
+        }
+
+        // Reset vehicle type when transport mode changes
+        if (name === 'transportMode') {
+            setFormData(prev => ({
+                ...prev,
+                vehicleType: '' // Clear selected vehicle type
             }));
         }
 
@@ -170,25 +208,25 @@ const CompleteTripSetup = () => {
                 transport_mode: formData.transportMode,
                 travelers: formData.members,
                 status: 'planned',
-                setupType: 'complete', // Tag for complete setup
+                setup_type: 'complete', // Tag for complete setup
 
-                // Additional details
-                vehicleDetails: {
+                // Additional details - using snake_case to match database
+                vehicle_details: {
                     type: formData.vehicleType,
                     name: formData.vehicleName,
                     price: formData.vehiclePrice
                 },
-                accommodationDetails: {
+                accommodation_details: {
                     type: formData.accommodationType,
                     name: formData.accommodationName,
                     price: formData.accommodationPrice
                 },
-                activitiesDetails: {
+                activities_details: {
                     tourPackage: formData.tourPackage,
                     tourPackagePrice: formData.tourPackagePrice,
                     restaurants: formData.restaurants
                 },
-                budgetDetails: {
+                budget_details: {
                     estimatedBudget: formData.budget,
                     preferences: formData.preferences,
                     notes: formData.notes
@@ -330,119 +368,229 @@ const CompleteTripSetup = () => {
         </div>
     );
 
-    const renderStep2 = () => (
-        <div className="form-step">
-            <h2>Transportation Details</h2>
-            <p className="step-description">How will you travel to your destination?</p>
+    const renderStep2 = () => {
+        // Filter vehicle types based on transport mode
+        const getAvailableVehicleTypes = () => {
+            if (formData.transportMode === 'own') {
+                // Own Vehicle: Show car, bike, bus without "Rental" prefix
+                return [
+                    { value: 'car', label: 'Car', icon: Car },
+                    { value: 'bike', label: 'Bike', icon: Car },
+                    { value: 'bus', label: 'Bus', icon: Car }
+                ];
+            } else if (formData.transportMode === 'rented') {
+                // Rented Vehicle: Show with "Rental" prefix
+                return [
+                    { value: 'car', label: 'Rental Car', icon: Car },
+                    { value: 'bike', label: 'Rental Bike', icon: Car },
+                    { value: 'bus', label: 'Rental Bus', icon: Car }
+                ];
+            } else if (formData.transportMode === 'public') {
+                // Public Transport: Show bus, train, flight
+                return [
+                    { value: 'flight', label: 'Flight', icon: Plane },
+                    { value: 'train', label: 'Train', icon: Car },
+                    { value: 'bus', label: 'Bus', icon: Car }
+                ];
+            }
+            return vehicleTypes;
+        };
 
-            <div className="form-group">
-                <label>Vehicle Type</label>
-                <div className="icon-grid">
-                    {vehicleTypes.map(type => {
-                        const Icon = type.icon;
-                        return (
-                            <label key={type.value} className={`icon-card ${formData.vehicleType === type.value ? 'selected' : ''}`}>
-                                <input
-                                    type="radio"
-                                    name="vehicleType"
-                                    value={type.value}
-                                    checked={formData.vehicleType === type.value}
-                                    onChange={handleChange}
-                                />
-                                <Icon size={32} />
-                                <span>{type.label}</span>
-                            </label>
-                        );
-                    })}
+        const availableVehicles = getAvailableVehicleTypes();
+
+        return (
+            <div className="form-step">
+                <h2>Transportation Details</h2>
+                <p className="step-description">How will you travel to your destination?</p>
+
+                <div className="form-group">
+                    <label>Vehicle Type</label>
+                    <div className="icon-grid">
+                        {availableVehicles.map(type => {
+                            const Icon = type.icon;
+                            return (
+                                <label key={type.value} className={`icon-card ${formData.vehicleType === type.value ? 'selected' : ''}`}>
+                                    <input
+                                        type="radio"
+                                        name="vehicleType"
+                                        value={type.value}
+                                        checked={formData.vehicleType === type.value}
+                                        onChange={handleChange}
+                                    />
+                                    <Icon size={32} />
+                                    <span>{type.label}</span>
+                                </label>
+                            );
+                        })}
+                    </div>
+                    {errors.vehicleType && <span className="error-text">{errors.vehicleType}</span>}
                 </div>
-                {errors.vehicleType && <span className="error-text">{errors.vehicleType}</span>}
-            </div>
 
-            <div className="form-group">
-                <label>Vehicle/Service Name</label>
-                <input
-                    type="text"
-                    name="vehicleName"
-                    value={formData.vehicleName}
-                    onChange={handleChange}
-                    placeholder="e.g., IndiGo 6E-123, Rajdhani Express"
-                    className={errors.vehicleName ? 'error' : ''}
-                />
-                {errors.vehicleName && <span className="error-text">{errors.vehicleName}</span>}
-            </div>
-
-            <div className="form-group">
-                <label>
-                    <DollarSign size={18} />
-                    Price (Optional)
-                </label>
-                <input
-                    type="text"
-                    name="vehiclePrice"
-                    value={formData.vehiclePrice}
-                    onChange={handleChange}
-                    placeholder="e.g., ₹5,000"
-                />
-            </div>
-        </div>
-    );
-
-    const renderStep3 = () => (
-        <div className="form-step">
-            <h2>Accommodation Details</h2>
-            <p className="step-description">Where will you stay during your trip?</p>
-
-            <div className="form-group">
-                <label>Accommodation Type</label>
-                <div className="icon-grid">
-                    {accommodationTypes.map(type => {
-                        const Icon = type.icon;
-                        return (
-                            <label key={type.value} className={`icon-card ${formData.accommodationType === type.value ? 'selected' : ''}`}>
-                                <input
-                                    type="radio"
-                                    name="accommodationType"
-                                    value={type.value}
-                                    checked={formData.accommodationType === type.value}
-                                    onChange={handleChange}
-                                />
-                                <Icon size={32} />
-                                <span>{type.label}</span>
-                            </label>
-                        );
-                    })}
+                <div className="form-group">
+                    <label>Vehicle/Service Name</label>
+                    <input
+                        type="text"
+                        name="vehicleName"
+                        value={formData.vehicleName}
+                        onChange={handleChange}
+                        placeholder="e.g., IndiGo 6E-123, Rajdhani Express"
+                        className={errors.vehicleName ? 'error' : ''}
+                    />
+                    {errors.vehicleName && <span className="error-text">{errors.vehicleName}</span>}
                 </div>
-                {errors.accommodationType && <span className="error-text">{errors.accommodationType}</span>}
-            </div>
 
-            <div className="form-group">
-                <label>Accommodation Name</label>
-                <input
-                    type="text"
-                    name="accommodationName"
-                    value={formData.accommodationName}
-                    onChange={handleChange}
-                    placeholder="e.g., Taj Hotel, Cozy Apartment"
-                    className={errors.accommodationName ? 'error' : ''}
-                />
-                {errors.accommodationName && <span className="error-text">{errors.accommodationName}</span>}
+                <div className="form-group">
+                    <label>
+                        <DollarSign size={18} />
+                        Price (Optional)
+                    </label>
+                    <input
+                        type="text"
+                        name="vehiclePrice"
+                        value={formData.vehiclePrice}
+                        onChange={handleChange}
+                        placeholder="e.g., ₹5,000"
+                    />
+                </div>
             </div>
+        );
+    };
 
-            <div className="form-group">
-                <label>
-                    <DollarSign size={18} />
-                    Price per Night (Optional)
-                </label>
-                <input
-                    type="text"
-                    name="accommodationPrice"
-                    value={formData.accommodationPrice}
-                    onChange={handleChange}
-                    placeholder="e.g., ₹3,000/night"
-                />
+    const renderStep3 = () => {
+        const handleAccommodationSelect = (accommodation) => {
+            setSelectedAccommodation(accommodation);
+            setFormData(prev => ({
+                ...prev,
+                accommodationName: accommodation.name,
+                accommodationPrice: accommodation.price
+            }));
+        };
+
+        const availableAccommodations = formData.accommodationType
+            ? mockAccommodations[formData.accommodationType] || []
+            : [];
+
+        return (
+            <div className="form-step">
+                <h2>Accommodation Details</h2>
+                <p className="step-description">Where will you stay during your trip?</p>
+
+                <div className="form-group">
+                    <label>Accommodation Type</label>
+                    <div className="icon-grid">
+                        {accommodationTypes.map(type => {
+                            const Icon = type.icon;
+                            return (
+                                <label key={type.value} className={`icon-card ${formData.accommodationType === type.value ? 'selected' : ''}`}>
+                                    <input
+                                        type="radio"
+                                        name="accommodationType"
+                                        value={type.value}
+                                        checked={formData.accommodationType === type.value}
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            setSelectedAccommodation(null);
+                                            setFormData(prev => ({ ...prev, accommodationName: '', accommodationPrice: '' }));
+                                        }}
+                                    />
+                                    <Icon size={32} />
+                                    <span>{type.label}</span>
+                                </label>
+                            );
+                        })}
+                    </div>
+                    {errors.accommodationType && <span className="error-text">{errors.accommodationType}</span>}
+                </div>
+
+                {formData.accommodationType && (
+                    <>
+                        <div className="form-group">
+                            <label>Selection Mode</label>
+                            <div className="radio-group">
+                                <label className={`radio-card ${accommodationMode === 'browse' ? 'selected' : ''}`}>
+                                    <input
+                                        type="radio"
+                                        name="accommodationMode"
+                                        value="browse"
+                                        checked={accommodationMode === 'browse'}
+                                        onChange={() => setAccommodationMode('browse')}
+                                    />
+                                    <span>Browse {formData.accommodationType === 'hotel' ? 'Hotels' : formData.accommodationType === 'resort' ? 'Resorts' : 'Airbnb'}</span>
+                                </label>
+                                <label className={`radio-card ${accommodationMode === 'manual' ? 'selected' : ''}`}>
+                                    <input
+                                        type="radio"
+                                        name="accommodationMode"
+                                        value="manual"
+                                        checked={accommodationMode === 'manual'}
+                                        onChange={() => {
+                                            setAccommodationMode('manual');
+                                            setSelectedAccommodation(null);
+                                        }}
+                                    />
+                                    <span>I Already Have</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        {accommodationMode === 'browse' && (
+                            <div className="form-group">
+                                <label>Select {formData.accommodationType === 'hotel' ? 'Hotel' : formData.accommodationType === 'resort' ? 'Resort' : 'Airbnb'}</label>
+                                <div className="accommodation-grid">
+                                    {availableAccommodations.map(acc => (
+                                        <div
+                                            key={acc.id}
+                                            className={`accommodation-card ${selectedAccommodation?.id === acc.id ? 'selected' : ''}`}
+                                            onClick={() => handleAccommodationSelect(acc)}
+                                        >
+                                            <div className="accommodation-header">
+                                                <h4>{acc.name}</h4>
+                                                <div className="accommodation-rating">⭐ {acc.rating}</div>
+                                            </div>
+                                            <div className="accommodation-location">📍 {acc.location}</div>
+                                            <div className="accommodation-price">{acc.price}/night</div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {errors.accommodationName && <span className="error-text">{errors.accommodationName}</span>}
+                            </div>
+                        )}
+
+                        {accommodationMode === 'manual' && (
+                            <>
+                                <div className="form-group">
+                                    <label>Accommodation Name</label>
+                                    <input
+                                        type="text"
+                                        name="accommodationName"
+                                        value={formData.accommodationName}
+                                        onChange={handleChange}
+                                        placeholder="e.g., Taj Hotel, Cozy Apartment"
+                                        className={errors.accommodationName ? 'error' : ''}
+                                    />
+                                    {errors.accommodationName && <span className="error-text">{errors.accommodationName}</span>}
+                                </div>
+
+                                <div className="form-group">
+                                    <label>
+                                        <DollarSign size={18} />
+                                        Price per Night (Optional)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="accommodationPrice"
+                                        value={formData.accommodationPrice}
+                                        onChange={handleChange}
+                                        placeholder="e.g., ₹3,000/night"
+                                    />
+                                </div>
+                            </>
+                        )}
+                    </>
+                )}
             </div>
-        </div>
-    );
+        );
+    };
 
     const renderStep4 = () => (
         <div className="form-step">

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTripContext } from '../../context/TripContext';
 import { useStoryContext } from '../../context/StoryContext';
 import { Navigate, Link } from 'react-router-dom';
+import { Sparkles, Save, FileText } from 'lucide-react';
 import jsPDF from 'jspdf';
 import './TripStoryCreator.css';
 
@@ -402,14 +403,14 @@ const TripStoryCreator = () => {
                         {/* Action Buttons */}
                         <div className="action-buttons">
                             <button className="btn btn-primary btn-full" onClick={generateAIStory}>
-                                ✨ Generate Story with AI
+                                <Sparkles size={20} /> Generate Story with AI
                             </button>
                             <div className="button-row">
                                 <button className="btn btn-secondary" onClick={handleSaveStory}>
-                                    💾 Save Story
+                                    <Save size={20} /> Save Story
                                 </button>
                                 <button className="btn btn-secondary" onClick={handleDownloadPDF}>
-                                    📄 Download PDF
+                                    <FileText size={20} /> Download PDF
                                 </button>
                             </div>
                         </div>

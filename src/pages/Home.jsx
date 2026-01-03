@@ -24,17 +24,13 @@ const Home = () => {
                                 <Bot size={20} />
                                 Create Trip with AI
                             </Link>
-                            <Link to="/trip-creator" className="btn btn-secondary btn-lg">
-                                <Edit3 size={20} />
-                                Create Trip Manually
-                            </Link>
                             <Link to="/complete-trip-setup" className="btn btn-primary btn-lg">
                                 <CheckCircle size={20} />
                                 Complete Trip Setup
                             </Link>
                         </div>
                         <p className="hero-note">
-                            <strong>AI Mode:</strong> Get instant detailed itinerary • <strong>Manual Mode:</strong> Plan step by step • <strong>Complete Setup:</strong> All-in-one trip configuration
+                            <strong>AI Mode:</strong> Get instant detailed itinerary • <strong>Complete Setup:</strong> All-in-one trip configuration
                         </p>
                         <div className="hero-stats">
                             <div className="stat-item">
