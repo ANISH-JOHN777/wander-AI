@@ -27,12 +27,13 @@ const SharedTripView = () => {
 
                 if (tripError) throw tripError;
 
+                console.log('✅ Trip Data Loaded:', tripData);
                 setTrip(tripData);
 
                 // Increment view count
                 await tripService.incrementViewCount(shareToken);
             } catch (err) {
-                console.error('Error fetching shared trip:', err);
+                console.error('❌ Error fetching shared trip:', err);
                 setError(err.message || 'Failed to load the shared trip.');
             } finally {
                 setLoading(false);
@@ -40,6 +41,7 @@ const SharedTripView = () => {
         };
 
         if (shareToken) {
+            console.log('🔍 Fetching shared trip for token:', shareToken);
             fetchSharedTrip();
         }
     }, [shareToken]);
@@ -113,7 +115,7 @@ const SharedTripView = () => {
             {/* Header / Banner */}
             <div className="shared-header">
                 <div className="header-bg" style={{
-                    backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/1600x900/?${encodeURIComponent(trip.destination)}')`
+                    backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1600&q=80&destination=${encodeURIComponent(trip.destination)}')`
                 }}></div>
                 <div className="header-content">
                     <div className="trip-meta">
