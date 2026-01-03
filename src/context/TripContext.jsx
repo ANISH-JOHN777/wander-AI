@@ -373,6 +373,7 @@ export const TripProvider = ({ children }) => {
         updateTrip,
         deleteTrip,
         getTripById,
+        setActiveTrip,
         clearActiveTrip,
 
         // Data operations

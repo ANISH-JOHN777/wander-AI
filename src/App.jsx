@@ -33,6 +33,7 @@ import AIChatPlanner from './pages/smart-tools/AIChatPlanner';
 import TripStoryCreator from './pages/smart-tools/TripStoryCreator';
 import Auth from './pages/Auth';
 import EmailConfirmation from './pages/EmailConfirmation';
+import SharedTripView from './pages/SharedTripView';
 import './App.css';
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
                       <Route path="/trip-details" element={<TripDetails />} />
                       <Route path="/trip-confirmation" element={<TripConfirmation />} />
                       <Route path="/complete-trip-setup" element={<CompleteTripSetup />} />
+                      <Route path="/shared/:shareToken" element={<SharedTripView />} />
                       <Route path="/day-planner" element={<DayPlanner />} />
                       <Route path="/saved-trips" element={<SavedTrips />} />
                       <Route path="/bookings" element={<Bookings />} />
