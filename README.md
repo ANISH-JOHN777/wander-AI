@@ -300,8 +300,8 @@ Password: demo123
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/wanderai.git
-cd wanderai
+git clone https://github.com/ANISH-JOHN777/wander-AI.git
+cd wander-AI
 ```
 
 2. **Install dependencies**
@@ -467,11 +467,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Anish John**
 
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/YOUR_PROFILE)
-- Email: your.email@example.com
+- GitHub: [@ANISH-JOHN777](https://github.com/ANISH-JOHN777)
+- Project Repository: [wander-AI](https://github.com/ANISH-JOHN777/wander-AI)
+- Live Demo: [WanderAI on Vercel](https://trip-planner-beta-ten.vercel.app)
 
 ---
 
