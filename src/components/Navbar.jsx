@@ -1,10 +1,22 @@
-import { NavLink } from 'react-router-dom';
-import { Home, LayoutDashboard, Plus, Calendar, Ticket, Bot, Save, Settings, Globe, LogIn, User, Share2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import {
+    Home, LayoutDashboard, Plus, Calendar,
+    Ticket, Bot, Save, Settings, Globe,
+    LogIn, User, Share2, MoreVertical, ChevronDown
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTripContext } from '../context/TripContext';
 import './Navbar.css';
 
-const Navbar = ({ showShare = false, onShare }) => {
+const Navbar = () => {
     const { user, isAuthenticated } = useAuth();
+    const { setIsShareModalOpen } = useTripContext();
+    const location = useLocation();
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const isOverview = location.pathname === '/overview';
 
     const navItems = [
         { path: '/home', label: 'Home', icon: Home },
@@ -13,9 +25,23 @@ const Navbar = ({ showShare = false, onShare }) => {
         { path: '/day-planner', label: 'Day Planner', icon: Calendar },
         { path: '/bookings', label: 'Bookings', icon: Ticket },
         { path: '/smart-tools', label: 'Smart Tools', icon: Bot },
-        { path: '/saved-trips', label: 'Saved Info', icon: Save },
-        { path: '/settings', label: 'Settings', icon: Settings },
     ];
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Close dropdown on route change
+    useEffect(() => {
+        setShowDropdown(false);
+    }, [location.pathname]);
 
     return (
         <nav className="navbar">
@@ -40,17 +66,42 @@ const Navbar = ({ showShare = false, onShare }) => {
                         );
                     })}
 
-                    {/* Share Button (conditional) */}
-                    {showShare && onShare && (
+                    {/* More Dropdown */}
+                    <div className="nav-dropdown-container" ref={dropdownRef}>
                         <button
-                            className="nav-link share-btn"
-                            onClick={onShare}
-                            title="Share this trip"
+                            className={`nav-link dropdown-trigger ${showDropdown ? 'active' : ''}`}
+                            onClick={() => setShowDropdown(!showDropdown)}
                         >
-                            <Share2 className="nav-icon" size={18} strokeWidth={2} />
-                            <span className="nav-label">Share</span>
+                            <MoreVertical className="nav-icon" size={18} strokeWidth={2} />
+                            <span className="nav-label">More</span>
+                            <ChevronDown size={14} className={`chevron ${showDropdown ? 'rotate' : ''}`} />
                         </button>
-                    )}
+
+                        {showDropdown && (
+                            <div className="nav-dropdown-menu">
+                                {isOverview && (
+                                    <button
+                                        className="dropdown-item share-item"
+                                        onClick={() => {
+                                            setIsShareModalOpen(true);
+                                            setShowDropdown(false);
+                                        }}
+                                    >
+                                        <Share2 size={16} />
+                                        <span>Share Trip</span>
+                                    </button>
+                                )}
+                                <NavLink to="/saved-trips" className="dropdown-item">
+                                    <Save size={16} />
+                                    <span>Saved Info</span>
+                                </NavLink>
+                                <NavLink to="/settings" className="dropdown-item">
+                                    <Settings size={16} />
+                                    <span>Settings</span>
+                                </NavLink>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Authentication Button */}
                     <NavLink

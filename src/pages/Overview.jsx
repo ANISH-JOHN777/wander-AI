@@ -8,8 +8,7 @@ import tripService from '../services/tripService';
 import './Overview.css';
 
 const Overview = () => {
-    const { activeTrip, setActiveTrip } = useTripContext();
-    const [showShareModal, setShowShareModal] = useState(false);
+    const { activeTrip, setActiveTrip, isShareModalOpen, setIsShareModalOpen } = useTripContext();
 
     // Redirect to TripCreator if no active trip
     if (!activeTrip) {
@@ -18,7 +17,7 @@ const Overview = () => {
 
     // Handle share button click
     const handleShare = () => {
-        setShowShareModal(true);
+        setIsShareModalOpen(true);
     };
 
     // Handle toggle public status
@@ -95,8 +94,6 @@ const Overview = () => {
 
     return (
         <>
-            <Navbar showShare={true} onShare={handleShare} />
-
             <div className="overview-page">
                 {/* Hero Section */}
                 <div className="overview-hero">
@@ -316,10 +313,10 @@ const Overview = () => {
             </div>
 
             {/* Share Modal */}
-            {showShareModal && (
+            {isShareModalOpen && (
                 <ShareModal
                     trip={activeTrip}
-                    onClose={() => setShowShareModal(false)}
+                    onClose={() => setIsShareModalOpen(false)}
                     onTogglePublic={handleTogglePublic}
                 />
             )}

@@ -20,6 +20,7 @@ export const TripProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [syncing, setSyncing] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
     // Load trips on mount and when auth state changes
     useEffect(() => {
@@ -365,6 +366,8 @@ export const TripProvider = ({ children }) => {
         error,
         syncing,
         setLoading,
+        isShareModalOpen,
+        setIsShareModalOpen,
 
         // Trip operations
         createTrip,

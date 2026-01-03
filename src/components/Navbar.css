@@ -124,20 +124,98 @@
     border-color: transparent;
 }
 
-/* Share Button */
-.nav-link.share-btn {
-    background: none;
-    border: 2px solid var(--color-primary);
-    color: var(--color-primary);
-    cursor: pointer;
-    font-weight: var(--font-semibold);
+/* Navigation Dropdown */
+.nav-dropdown-container {
+    position: relative;
 }
 
-.nav-link.share-btn:hover {
-    background: var(--color-primary);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+.dropdown-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-trigger .chevron {
+    transition: transform 0.3s ease;
+    margin-left: 2px;
+}
+
+.dropdown-trigger .chevron.rotate {
+    transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-light);
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    z-index: 1000;
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-secondary);
+    color: var(--color-primary);
+}
+
+.dropdown-item svg {
+    color: var(--text-tertiary);
+    transition: color 0.2s ease;
+}
+
+.dropdown-item:hover svg {
+    color: var(--color-primary);
+}
+
+.dropdown-item.share-item {
+    color: var(--color-primary);
+    background: rgba(220, 38, 38, 0.05);
+}
+
+.dropdown-item.share-item:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.dropdown-item.share-item svg {
+    color: var(--color-primary);
 }
 
 
@@ -226,4 +304,18 @@
     .app-main {
         padding-bottom: 80px;
     }
+
+    .nav-dropdown-menu {
+        bottom: 100%;
+        top: auto;
+        right: 0;
+        margin-bottom: 0.5rem;
+        margin-top: 0;
+        min-width: 150px;
+    }
+
+    .nav-link.dropdown-trigger {
+        padding: var(--space-2);
+    }
 }
+
