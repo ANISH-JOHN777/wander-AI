@@ -166,13 +166,18 @@ class TripService {
                     // Try to find by any means
                     if (trips.length > 0) {
                         console.warn('⚠️ Using first available trip as fallback');
-                        trips[0] = {
-                            ...trips[0],
+                        const fallbackTrip = trips[0];
+                        const updatedFallbackTrip = {
+                            ...fallbackTrip,
                             ...updates,
                             updated_at: new Date().toISOString(),
+                            // Add fallback for day_plans if updates don't provide it
+                            day_plans: updates.day_plans || updates.dayPlans || fallbackTrip.day_plans || fallbackTrip.dayPlans || [],
                         };
+                        trips[0] = updatedFallbackTrip;
                         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trips));
                         console.log('📍 LOCAL MODE: Trip updated (fallback) in localStorage');
+                        console.log('Fallback trip details after update:', updatedFallbackTrip);
                         return { trip: trips[0], error: null };
                     }
 
@@ -470,7 +475,7 @@ class TripService {
         // Supabase mode: increment in database
         try {
             const { error } = await supabase.rpc('increment_view_count', {
-                token: shareToken
+                t_token: shareToken
             });
 
             // If RPC doesn't exist, use manual update

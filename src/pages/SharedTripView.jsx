@@ -177,7 +177,7 @@ const SharedTripView = () => {
                             <h2>Trip Itinerary</h2>
                         </div>
 
-                        {trip.day_plans || trip.dayPlans ? (
+                        {(trip.day_plans || trip.dayPlans) && Array.isArray(trip.day_plans || trip.dayPlans) ? (
                             <div className="shared-itinerary-timeline">
                                 {(trip.day_plans || trip.dayPlans).map((day, idx) => (
                                     <div key={idx} className="timeline-day">
