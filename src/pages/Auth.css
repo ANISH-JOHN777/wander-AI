@@ -5,7 +5,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('../assets/images/auth-bg.png');
+    background-size: cover;
+    background-position: center;
     padding: 20px;
     position: relative;
 }
@@ -70,7 +72,7 @@
     width: 64px;
     height: 64px;
     margin: 0 auto 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -159,8 +161,8 @@
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
 }
 
 .form-group input:disabled {
@@ -199,14 +201,14 @@
 }
 
 .password-toggle:hover {
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 /* Submit Button */
 .auth-submit-btn {
     width: 100%;
     padding: 14px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -223,7 +225,7 @@
 
 .auth-submit-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: var(--shadow-lg);
 }
 
 .auth-submit-btn:active:not(:disabled) {
@@ -266,7 +268,7 @@
 .toggle-link {
     background: none;
     border: none;
-    color: #667eea;
+    color: var(--color-primary);
     font-weight: 600;
     cursor: pointer;
     margin-left: 6px;
@@ -274,7 +276,7 @@
 }
 
 .toggle-link:hover:not(:disabled) {
-    color: #764ba2;
+    color: var(--color-primary-dark);
     text-decoration: underline;
 }
 
@@ -309,8 +311,8 @@
     width: 100%;
     padding: 12px 24px;
     background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
@@ -337,7 +339,8 @@
 
 /* Profile Page Styles */
 .profile-page {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    background: var(--bg-secondary);
 }
 
 .profile-container {
@@ -371,13 +374,13 @@
 .profile-avatar {
     width: 96px;
     height: 96px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
     position: relative;
 }
@@ -394,7 +397,7 @@
     right: 0;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -408,7 +411,7 @@
 
 .avatar-upload-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    box-shadow: var(--shadow-md);
 }
 
 .profile-header h1 {
@@ -471,7 +474,7 @@
 }
 
 .info-item label svg {
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .info-item p {
@@ -495,8 +498,8 @@
 
 .info-item input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
 }
 
 .info-note {

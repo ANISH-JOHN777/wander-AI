@@ -70,8 +70,8 @@
 }
 
 .notification-card.unread {
-    background: #f7fafc;
-    border-left: 4px solid #667eea;
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--color-primary);
 }
 
 .notification-icon {
@@ -104,7 +104,7 @@
 .unread-indicator {
     width: 10px;
     height: 10px;
-    background: #667eea;
+    background: var(--color-primary);
     border-radius: 50%;
     position: absolute;
     top: 24px;
@@ -195,7 +195,7 @@
 }
 
 .toggle input:checked+.toggle-slider {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
 }
 
 .toggle input:checked+.toggle-slider:before {

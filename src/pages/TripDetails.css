@@ -29,7 +29,7 @@
 
 /* Header */
 .trip-details-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     color: white;
     padding: 2rem 0 3rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -122,7 +122,7 @@
     width: 56px;
     height: 56px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     color: white;
     display: flex;
     align-items: center;
@@ -176,7 +176,7 @@
 }
 
 .highlight-tag {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -231,12 +231,12 @@
 }
 
 .day-tab:hover {
-    border-color: #667eea;
+    border-color: var(--color-primary);
     transform: translateY(-2px);
 }
 
 .day-tab.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     border-color: transparent;
     color: white;
 }
@@ -278,7 +278,7 @@
 }
 
 .activity-count {
-    background: #667eea;
+    background: var(--color-primary);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -311,7 +311,7 @@
 }
 
 .activity-time svg {
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .activity-time span:first-of-type {
@@ -335,7 +335,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     flex-shrink: 0;
     margin-top: 0.5rem;
     position: relative;
@@ -455,7 +455,7 @@
 .hotel-price {
     font-size: 1.125rem;
     font-weight: 700;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 /* Transport Section */
@@ -499,7 +499,7 @@
 .transport-cost {
     font-size: 1rem;
     font-weight: 700;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .transport-description {
@@ -512,7 +512,7 @@
 /* CTA Section */
 .cta-section {
     padding: 4rem 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
     color: white;
 }
 

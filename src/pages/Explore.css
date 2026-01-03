@@ -4,7 +4,9 @@
 }
 
 .explore-hero {
-    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('../assets/images/explore-hero.png');
+    background-size: cover;
+    background-position: center;
     padding: 6rem 2rem;
     color: white;
     text-align: center;
@@ -12,6 +14,7 @@
 
 .explore-hero h1 {
     font-size: 3rem;
+    color: white;
     font-weight: 800;
     margin-bottom: 1rem;
     display: flex;
@@ -96,14 +99,14 @@
 }
 
 .filter-btn:hover {
-    border-color: #dc2626;
-    color: #dc2626;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .filter-btn.active {
-    background: #fee2e2;
-    border-color: #dc2626;
-    color: #dc2626;
+    background: var(--color-primary-50);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .results-count {
@@ -150,6 +153,9 @@
     top: 1rem;
     left: 1rem;
     background: rgba(220, 38, 38, 0.9);
+    /* Keep slightly transparent red or use var? Using var might be tricky with opacity. keeping hardcoded rgba for now but could use --color-primary if we had an rgba var */
+    background: var(--color-primary);
+    opacity: 0.9;
     color: white;
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
@@ -213,7 +219,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #dc2626;
+    color: var(--color-primary);
     font-weight: 600;
     text-decoration: none;
     font-size: 0.95rem;
@@ -235,8 +241,8 @@
 .loader {
     width: 48px;
     height: 48px;
-    border: 5px solid #fee2e2;
-    border-top-color: #dc2626;
+    border: 5px solid var(--color-primary-100);
+    border-top-color: var(--color-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 1rem;

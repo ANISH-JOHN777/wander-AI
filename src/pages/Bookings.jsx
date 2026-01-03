@@ -18,7 +18,6 @@ const Bookings = () => {
             icon: Hotel,
             description: 'Find and book hotels for your trip',
             path: '/bookings/hotels',
-            color: '#667eea',
         },
         {
             id: 'airbnb',
@@ -26,7 +25,6 @@ const Bookings = () => {
             icon: Home,
             description: 'Discover unique stays and experiences',
             path: '/bookings/airbnb',
-            color: '#ff5a5f',
         },
         {
             id: 'resorts',
@@ -34,7 +32,6 @@ const Bookings = () => {
             icon: Palmtree,
             description: 'Luxury resorts and beach properties',
             path: '/bookings/resorts',
-            color: '#10b981',
         },
         {
             id: 'transport',
@@ -42,7 +39,6 @@ const Bookings = () => {
             icon: Plane,
             description: 'Book flights, trains, and buses',
             path: '/bookings/transport',
-            color: '#48bb78',
         },
         {
             id: 'restaurants',
@@ -50,7 +46,6 @@ const Bookings = () => {
             icon: UtensilsCrossed,
             description: 'Discover dining options',
             path: '/bookings/restaurants',
-            color: '#ed8936',
         },
         {
             id: 'packages',
@@ -58,7 +53,6 @@ const Bookings = () => {
             icon: Package,
             description: 'All-inclusive tour packages',
             path: '/bookings/packages',
-            color: '#8b5cf6',
         },
     ];
 
@@ -84,7 +78,6 @@ const Bookings = () => {
                             key={module.id}
                             to={module.path}
                             className="module-card"
-                            style={{ '--module-color': module.color }}
                         >
                             <div className="module-icon">
                                 <IconComponent size={32} />

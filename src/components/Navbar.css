@@ -67,7 +67,7 @@
 }
 
 .nav-link:hover {
-    background: rgba(99, 102, 241, 0.1);
+    background: var(--color-primary-50);
     color: var(--color-primary);
     transform: translateY(-1px);
 }
@@ -108,18 +108,18 @@
     font-weight: var(--font-semibold);
     padding: var(--space-2) var(--space-5);
     margin-left: var(--space-6);
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
 }
 
 .nav-link.auth-link:hover {
-    background: #4f46e5;
+    background: var(--color-primary-dark);
     color: var(--text-inverse);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
 .nav-link.auth-link.active {
-    background: #4338ca;
+    background: var(--color-primary-dark);
     color: var(--text-inverse);
     border-color: transparent;
 }
@@ -318,4 +318,3 @@
         padding: var(--space-2);
     }
 }
-

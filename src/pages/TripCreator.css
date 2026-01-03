@@ -72,13 +72,13 @@
 .form-select:focus,
 .form-input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
 }
 
 .form-select.error,
 .form-input.error {
-    border-color: #f56565;
+    border-color: var(--color-danger);
 }
 
 .form-select:disabled,
@@ -114,15 +114,15 @@
 }
 
 .travel-type-card:hover {
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.02);
+    border-color: var(--color-primary);
+    background: var(--color-primary-50);
     transform: translateY(-2px);
 }
 
 .travel-type-card.selected {
-    border-color: #667eea;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-primary-100) 100%);
+    box-shadow: 0 4px 12px var(--color-primary-100);
 }
 
 .travel-type-card.disabled {
@@ -157,15 +157,15 @@
 /* Error Messages */
 .error-message {
     display: block;
-    color: #f56565;
+    color: var(--color-danger);
     font-size: 0.85rem;
     margin-top: 6px;
     font-weight: 500;
 }
 
 .submit-error {
-    background: #fed7d7;
-    color: #c53030;
+    background: var(--color-danger-bg);
+    color: var(--color-danger-dark);
     padding: 14px 16px;
     border-radius: 10px;
     display: flex;
