@@ -2,7 +2,7 @@
 
 > **Smart, stress-free trip planning powered by AI. Create personalized itineraries, manage bookings, and organize every detail of your journey—all in one place.**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://trip-planner-fk6qayjlz-anish-john777s-projects.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://trip-planner-git-main-anish-john777s-projects.vercel.app/)
 [![React](https://img.shields.io/badge/React-19.2.0-blue)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.4-purple)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -100,7 +100,7 @@ WanderAI addresses these challenges by providing:
 
 ## 🌐 Live Demo
 
-🚀 **[View Live Demo](https://trip-planner-beta-ten.vercel.app)**
+🚀 **[View Live Demo](https://trip-planner-git-main-anish-john777s-projects.vercel.app/)**
 
 > **Experience WanderAI**: The application is deployed on Vercel with full functionality
 
@@ -478,7 +478,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - GitHub: [@ANISH-JOHN777](https://github.com/ANISH-JOHN777)
 - Project Repository: [wander-AI](https://github.com/ANISH-JOHN777/wander-AI)
-- Live Demo: [WanderAI on Vercel](https://trip-planner-beta-ten.vercel.app)
+- Live Demo: [WanderAI on Vercel](https://trip-planner-git-main-anish-john777s-projects.vercel.app/)
 
 ---
 
