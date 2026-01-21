@@ -393,9 +393,14 @@ class TripService {
                 })
                 .eq('id', tripId)
                 .select()
-                .single();
+                .maybeSingle(); // Use maybeSingle to handle 0 rows without error
 
             if (error) throw error;
+
+            if (!data) {
+                console.error('❌ Trip update failed: No row found or RLS policy violation. Check if you own this trip.');
+                return { trip: null, error: new Error('Trip not found or permission denied') };
+            }
 
             console.log('✅ Trip sharing toggled in Supabase');
             return { trip: data, error: null };

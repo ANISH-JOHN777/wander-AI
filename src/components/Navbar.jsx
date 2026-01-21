@@ -92,6 +92,10 @@ const Navbar = () => {
                                         <span>Share Trip</span>
                                     </button>
                                 )}
+                                <NavLink to="/travel-buddy" className="dropdown-item">
+                                    <User size={16} />
+                                    <span>Find Travel Buddy</span>
+                                </NavLink>
                                 <NavLink to="/saved-trips" className="dropdown-item">
                                     <Save size={16} />
                                     <span>Saved Info</span>
@@ -104,9 +108,9 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* Authentication Button */}
+                    {/* Authentication/Profile Button */}
                     <NavLink
-                        to="/auth"
+                        to={isAuthenticated ? "/profile" : "/auth"}
                         className={({ isActive }) => `nav-link auth-link ${isActive ? 'active' : ''}`}
                     >
                         {isAuthenticated ? (

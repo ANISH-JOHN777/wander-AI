@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import ShareModal from '../components/ShareModal';
+import PhotoGallery from '../components/PhotoGallery';
 import tripService from '../services/tripService';
 import { getMockWeather } from '../utils/weatherMock';
 import TripMap from '../components/TripMap';
@@ -52,6 +53,17 @@ const Overview = () => {
         } catch (error) {
             console.error('Error toggling trip public status:', error);
             throw error;
+        }
+    };
+
+    // Handle photos update
+    const handlePhotosUpdate = async (updatedPhotos) => {
+        try {
+            const updatedTrip = { ...activeTrip, photos: updatedPhotos };
+            await tripService.updateTrip(activeTrip.id, updatedTrip);
+            setActiveTrip(updatedTrip);
+        } catch (error) {
+            console.error('Error updating photos:', error);
         }
     };
 
@@ -329,6 +341,13 @@ const Overview = () => {
                             </div>
                         </div>
                     )}
+
+                {/* Photo Gallery */}
+                <PhotoGallery
+                    tripId={activeTrip.id}
+                    photos={activeTrip.photos || []}
+                    onPhotosUpdate={handlePhotosUpdate}
+                />
 
                 {/* Trip Info */}
                 <div className="trip-info-section">
